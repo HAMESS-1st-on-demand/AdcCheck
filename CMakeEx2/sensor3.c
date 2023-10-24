@@ -1,11 +1,19 @@
 #include <stdio.h>
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
+#include <stdlib.h>
 
 #define ADC_CHANNEL1 0 // Channel 1번
 #define ADC_CHANNEL2 1 // Channel 2번
 #define SPI_SPEED 1000000 // 1Mhz
 #define CS 1
+
+void printBinary(unsigned char byte) {
+    for (int i = 7; i >= 0; i--) {
+        printf("%d", (byte >> i) & 1);
+    }
+}
+
 
 int readADC(int channel){ // 지정된 SPI 채널에서 ADC 값을 읽습니다.
     unsigned char buffer[3]; // SPI 통신을 위한 버퍼 준비
@@ -15,11 +23,19 @@ int readADC(int channel){ // 지정된 SPI 채널에서 ADC 값을 읽습니다.
     buffer[1] = (0b10+channel)<<6 | 1<<5;
     buffer[2] = 0;
 
-    //printf("Send   : %x %x %x\n",buffer[0],buffer[1],buffer[2]);
+    for (int i = 0; i < 3; i++) {
+        printf("Byte %d: ", i + 1);
+        printBinary(buffer[i]);
+        printf("\n");
+    }
     digitalWrite(CS, LOW); // CS/SHDN bit을 0으로 만들어야 값을 얻을 수 있다.
     wiringPiSPIDataRW(0, buffer, 3); // SPI 장치와 데이터 교환
     digitalWrite(CS, HIGH); // CS/SHDN bit : CHANNEL 바뀔 때 1로 setting
-    //printf("Recieve: %x %x %x\n",buffer[0],buffer[1],buffer[2]);
+    for (int i = 0; i < 3; i++) {
+        printf("Byte %d: ", i + 1);
+        printBinary(buffer[i]);
+        printf("\n");
+    }
     adc = ((buffer[1] & 0x0F) << 8) + buffer[2]; // 데이터 교환 후 ADC 값 버퍼 추출, 반환
     return adc;
 }
