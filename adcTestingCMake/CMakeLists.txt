@@ -8,7 +8,7 @@ include(CTest)
 include(CPack)
 enable_testing()
 
-add_executable(adc_check_channel2 sensor3.c)
+add_executable(adc_check_channel2 dustSensor.c)
 target_link_libraries(adc_check_channel2 wiringPi)
 target_link_libraries(adc_check_channel2 bcm2835)
 target_link_libraries(adc_check_channel2 pthread)

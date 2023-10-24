@@ -1,3 +1,4 @@
+//이진수 확인코드
 #include <stdio.h>
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
@@ -13,7 +14,6 @@ void printBinary(unsigned char byte) {
         printf("%d", (byte >> i) & 1);
     }
 }
-
 
 int readADC(int channel){ // 지정된 SPI 채널에서 ADC 값을 읽습니다.
     unsigned char buffer[3]; // SPI 통신을 위한 버퍼 준비
@@ -55,8 +55,8 @@ int main(void){
     while(1){
         int adcValue1 = readADC(ADC_CHANNEL1);
         printf("ADC value 1 = %d\n", adcValue1);
-        //int adcValue2 = readADC(ADC_CHANNEL2); 
-        //printf("ADC value 2 = %d\n", adcValue2);
+        int adcValue2 = readADC(ADC_CHANNEL2); 
+        printf("ADC value 2 = %d\n", adcValue2);
         delay(1000);
     }
 

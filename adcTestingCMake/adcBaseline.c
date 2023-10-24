@@ -37,6 +37,7 @@ int main(void){
     pinMode(CS, OUTPUT);
 
     while(1){
+        //채널 0: 수위센서 채널1: 조도센서
         int adcValue1 = readADC(ADC_CHANNEL1);
         printf("ADC value 1 = %d\n", adcValue1);
         //int adcValue2 = readADC(ADC_CHANNEL2); 
